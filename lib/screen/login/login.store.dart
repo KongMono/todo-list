@@ -1,21 +1,20 @@
 import 'package:todo_list_app/base/base_store.dart';
 import 'package:todo_list_app/screen/login/login.state.dart';
 import 'package:todo_list_app/services/login/models.dart';
-import 'package:todo_list_app/services/todo_list/models.dart';
 
-class UpdateLogin extends StoreAction {}
+class StartLogin extends StoreAction {}
 
 class LoginPageStore extends BaseStore<LoginPageState> {
   LoginPageStore() : super(LoginPageState());
 
   @override
   void dispatch(StoreAction action) async {
-    if (action is UpdateLogin) {
-      await _updateLogin();
+    if (action is StartLogin) {
+      await _startLogin();
     }
   }
 
-  Future _updateLogin() async {
+  Future _startLogin() async {
     UserInfo user = UserInfo(username: '', password: '');
 
     updateState(currentState.copyWith(

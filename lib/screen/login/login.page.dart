@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list_app/screen/login/login.store.dart';
-import 'package:todo_list_app/services/login/models.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -46,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
     return ChangeNotifierProvider(
         create: (context) {
           var store = LoginPageStore();
-          store.dispatch(UpdateLogin());
+          store.dispatch(StartLogin());
           return store;
         },
         child: Consumer<LoginPageStore>(
