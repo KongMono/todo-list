@@ -5,6 +5,12 @@ import 'package:todo_list_app/services/todo_list/models.dart';
 
 class StartTodoList extends StoreAction {}
 
+class AddTodoList extends StoreAction {
+  final ListInfo listInfo;
+
+  AddTodoList({@required this.listInfo});
+}
+
 class CheckTodoList extends StoreAction {
   final int index;
 
@@ -20,6 +26,8 @@ class TodoListPageStore extends BaseStore<TodoListPageState> {
       await _startList();
     } else if (action is CheckTodoList) {
       await _checkTodoList(action);
+    } else if (action is AddTodoList) {
+      await _addTodoList(action);
     }
   }
 
@@ -27,7 +35,7 @@ class TodoListPageStore extends BaseStore<TodoListPageState> {
     List<ListInfo> todoList = [];
     for (int i = 1; i < 6; i++) {
       todoList
-          .add(ListInfo(description: 'Test Saved Stop No: $i', checked: false));
+          .add(ListInfo(description: 'Auto Add List No: $i', checked: false));
     }
     updateState(currentState.copyWith(
       todoList: todoList,
@@ -41,6 +49,14 @@ class TodoListPageStore extends BaseStore<TodoListPageState> {
     } else {
       todoList[action.index].checked = true;
     }
+    updateState(currentState.copyWith(
+      todoList: todoList,
+    ));
+  }
+
+  Future _addTodoList(AddTodoList action) async {
+    List<ListInfo> todoList = currentState.todoList;
+    todoList.add(action.listInfo);
     updateState(currentState.copyWith(
       todoList: todoList,
     ));

@@ -102,6 +102,20 @@ class _Item extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var icon;
+    var text;
+    icon = checkedImage(icon);
+    text = checkedLineThrough(text);
+    return ListTile(
+      leading: icon,
+      title: Align(
+        alignment: Alignment(-0.8, 2),
+        child: text,
+      ),
+      contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
+    );
+  }
+
+  checkedImage(icon) {
     if (this.checked) {
       icon = RaisedButton(
         onPressed: () {
@@ -125,13 +139,16 @@ class _Item extends StatelessWidget {
         shape: CircleBorder(),
       );
     }
-    return ListTile(
-      leading: icon,
-      title: Align(
-        alignment: Alignment(-0.8, 2),
-        child: Text(this.desc),
-      ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
-    );
+    return icon;
+  }
+
+  checkedLineThrough(text) {
+    if (this.checked) {
+      text = Text(this.desc,
+          style: TextStyle(decoration: TextDecoration.lineThrough));
+    } else {
+      text = Text(this.desc);
+    }
+    return text;
   }
 }
