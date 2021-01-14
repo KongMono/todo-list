@@ -11,10 +11,102 @@ class TodoListPage extends StatefulWidget {
 
 class _TodoListPageState extends State<TodoListPage> {
   Color _buttonColor = Colors.green;
+  TextEditingController textController = TextEditingController();
+  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
     super.initState();
+  }
+
+  _modalBottomSheetMenu(store) {
+    showModalBottomSheet(
+        isDismissible: false,
+        shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.only(
+                topLeft: const Radius.circular(20.0),
+                topRight: const Radius.circular(20.0))),
+        backgroundColor: Colors.white,
+        context: context,
+        builder: (builder) {
+          return new GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: new Container(
+                  height: 750.0,
+                  color: Colors.transparent,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          new GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  height: 30,
+                                  width: 70,
+                                  child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(left: 20.0),
+                                      child: Text('Cancel',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.center)))),
+                          Expanded(
+                              child: Container(
+                                  height: 40, width: 40, child: null)),
+                          new GestureDetector(
+                              onTap: () {
+                                store.dispatch(AddTodoList(
+                                    listInfo: new ListInfo(
+                                        description: textController.text,
+                                        checked: false)));
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  height: 30,
+                                  width: 70,
+                                  child: Padding(
+                                      padding:
+                                          const EdgeInsets.only(right: 20.0),
+                                      child: Text('Save',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                          textAlign: TextAlign.center)))),
+                        ],
+                      ),
+                      Divider(),
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextField(
+                              controller: textController,
+                              decoration: new InputDecoration.collapsed(
+                                  hintText: 'Task name...'),
+                              autofocus: true)),
+                      Padding(
+                          padding: const EdgeInsets.only(left: 8.0, top: 10.0),
+                          child: Text('Due Date *',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
+                              textAlign: TextAlign.center)),
+                      Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: CupertinoTextField(
+                            obscureText: true,
+                            placeholder: "วัน / เดือน / ปี พ.ศ.",
+                          ))
+                    ],
+                  )));
+        });
   }
 
   @override
@@ -46,47 +138,53 @@ class _TodoListPageState extends State<TodoListPage> {
                                 Icons.add,
                                 color: Colors.white,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                _modalBottomSheetMenu(store);
+                              },
                             )),
                       ),
                     ],
                   ),
-                  body: Column(
+                  body: SingleChildScrollView(
+                      child: Column(
                     children: <Widget>[
                       ExpansionTile(
+                        backgroundColor: Colors.white,
                         title: Text("All",
                             style: TextStyle(
                                 fontSize: 18.0, fontWeight: FontWeight.bold)),
                         children: <Widget>[
                           _TodoList(
                               listInfo: store.currentState.todoList,
-                              store: store),
+                              store: store)
                         ],
-                      ),
+                      )
                     ],
-                  ),
+                  )),
                 )));
   }
 }
 
 class _TodoList extends StatelessWidget {
   _TodoList({Key key, this.listInfo, this.store}) : super(key: key);
-
-  final ScrollController _scrollController = ScrollController();
   final List<ListInfo> listInfo;
   final TodoListPageStore store;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        controller: _scrollController,
+        scrollDirection: Axis.vertical,
         shrinkWrap: true,
+        controller: _scrollController,
         itemCount: this.listInfo.length,
-        itemBuilder: (context, index) => _Item(
-            index: index,
-            desc: listInfo[index].description,
-            checked: listInfo[index].checked,
-            store: store));
+        itemBuilder: (context, index) {
+          return _Item(
+              index: index,
+              desc: listInfo[index].description,
+              checked: listInfo[index].checked,
+              store: store);
+        });
   }
 }
 
@@ -105,14 +203,16 @@ class _Item extends StatelessWidget {
     var text;
     icon = checkedImage(icon);
     text = checkedLineThrough(text);
-    return ListTile(
-      leading: icon,
-      title: Align(
-        alignment: Alignment(-0.8, 2),
-        child: text,
-      ),
-      contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
-    );
+    return Column(children: <Widget>[
+      ListTile(
+        leading: icon,
+        title: Align(
+          alignment: Alignment(-1.06, 2),
+          child: text,
+        ),
+        contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
+      )
+    ]);
   }
 
   checkedImage(icon) {
