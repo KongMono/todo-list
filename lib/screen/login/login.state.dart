@@ -8,8 +8,6 @@ class LoginPageState {
   });
 
   LoginPageState copyWith({UserInfo user}) {
-    return LoginPageState(
-      user: user ?? this.user
-    );
+    return LoginPageState(user: user ?? this.user);
   }
 }

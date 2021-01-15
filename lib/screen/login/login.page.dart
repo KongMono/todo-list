@@ -57,14 +57,10 @@ class _LoginPageState extends State<LoginPage> {
                         Padding(
                           padding: const EdgeInsets.only(top: 80.0, bottom: 40),
                           child: Text('Login',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 30)),
+                              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 30)),
                         ),
                         Padding(
-                            padding: const EdgeInsets.only(
-                                left: 40.0, right: 40.0, top: 10.0),
+                            padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
                             child: SizedBox(
                               width: double.infinity,
                               height: 50,
@@ -74,8 +70,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             )),
                         Padding(
-                            padding: const EdgeInsets.only(
-                                left: 40.0, right: 40.0, top: 10.0),
+                            padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 10.0),
                             child: SizedBox(
                               width: double.infinity,
                               height: 50,
@@ -86,8 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             )),
                         Padding(
-                          padding: const EdgeInsets.only(
-                              left: 40.0, right: 40.0, top: 30.0),
+                          padding: const EdgeInsets.only(left: 40.0, right: 40.0, top: 30.0),
                           child: SizedBox(
                             width: double.infinity,
                             height: 50,
@@ -102,17 +96,12 @@ class _LoginPageState extends State<LoginPage> {
                                 style: new TextStyle(color: Colors.white),
                               ),
                               onPressed: () {
-                                // if (this.emailController.text ==
-                                //         "test@test.com" &&
-                                //     this.passwordController.text == "123456") {
-                                //   Navigator.popAndPushNamed(
-                                //       context, "/todo_list");
-                                // } else {
-                                //   _showDialog(context);
-                                // }
-
-                                Navigator.popAndPushNamed(
-                                    context, "/todo_list");
+                                if (this.emailController.text == "test@test.com" &&
+                                    this.passwordController.text == "123456") {
+                                  Navigator.popAndPushNamed(context, "/todo_list");
+                                } else {
+                                  _showDialog(context);
+                                }
                               },
                             ),
                           ),

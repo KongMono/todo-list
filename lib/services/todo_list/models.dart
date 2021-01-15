@@ -9,3 +9,13 @@ class ListInfo {
     @required this.checked
   });
 }
+
+class SelectedDate {
+  DateTime date;
+  bool selected;
+
+  SelectedDate({
+    @required this.date,
+    @required this.selected
+  });
+}

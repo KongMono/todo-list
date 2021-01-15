@@ -3,6 +3,14 @@ import 'package:todo_list_app/base/base_store.dart';
 import 'package:todo_list_app/screen/todo_list/todo_list.state.dart';
 import 'package:todo_list_app/services/todo_list/models.dart';
 
+class UpdateSelectedDate extends StoreAction {
+  final SelectedDate selectedDate;
+
+  UpdateSelectedDate({@required this.selectedDate});
+}
+
+class StartSelectedDate extends StoreAction {}
+
 class StartTodoList extends StoreAction {}
 
 class AddTodoList extends StoreAction {
@@ -24,21 +32,31 @@ class TodoListPageStore extends BaseStore<TodoListPageState> {
   void dispatch(StoreAction action) async {
     if (action is StartTodoList) {
       await _startList();
+    } else if (action is StartSelectedDate) {
+      await _startSelectedDate();
     } else if (action is CheckTodoList) {
       await _checkTodoList(action);
     } else if (action is AddTodoList) {
       await _addTodoList(action);
+    } else if (action is UpdateSelectedDate) {
+      await _updateSelectedDate(action);
     }
   }
 
   Future _startList() async {
     List<ListInfo> todoList = [];
     for (int i = 1; i < 6; i++) {
-      todoList
-          .add(ListInfo(description: 'Auto Add List No: $i', checked: false));
+      todoList.add(ListInfo(description: 'Auto Add List No: $i', checked: false));
     }
     updateState(currentState.copyWith(
       todoList: todoList,
+    ));
+  }
+
+  Future _startSelectedDate() async {
+    SelectedDate selectedDate = new SelectedDate(date: DateTime.now(), selected: false);
+    updateState(currentState.copyWith(
+      selectedDate: selectedDate,
     ));
   }
 
@@ -59,6 +77,15 @@ class TodoListPageStore extends BaseStore<TodoListPageState> {
     todoList.add(action.listInfo);
     updateState(currentState.copyWith(
       todoList: todoList,
+    ));
+  }
+
+  Future _updateSelectedDate(UpdateSelectedDate action) async {
+    SelectedDate selectedDate = currentState.selectedDate;
+    selectedDate.date = action.selectedDate.date;
+    selectedDate.selected = action.selectedDate.selected;
+    updateState(currentState.copyWith(
+      selectedDate: selectedDate,
     ));
   }
 }
