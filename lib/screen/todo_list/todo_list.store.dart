@@ -45,9 +45,6 @@ class TodoListPageStore extends BaseStore<TodoListPageState> {
 
   Future _startList() async {
     List<ListInfo> todoList = [];
-    for (int i = 1; i < 6; i++) {
-      todoList.add(ListInfo(description: 'Auto Add List No: $i', checked: false));
-    }
     updateState(currentState.copyWith(
       todoList: todoList,
     ));
@@ -74,7 +71,7 @@ class TodoListPageStore extends BaseStore<TodoListPageState> {
 
   Future _addTodoList(AddTodoList action) async {
     List<ListInfo> todoList = currentState.todoList;
-    todoList.add(action.listInfo);
+    todoList.insert(0, action.listInfo);
     updateState(currentState.copyWith(
       todoList: todoList,
     ));
